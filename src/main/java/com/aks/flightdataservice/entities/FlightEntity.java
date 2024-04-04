@@ -10,6 +10,8 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 
 @Entity
 @Table(name="FLIGHT")
@@ -26,7 +28,7 @@ public class FlightEntity {
     private String source;
     private String destination;
     private LocalDate flightDate;
-    private LocalTime flightTime;
+    private OffsetDateTime flightTime;
     private String flightDuration;
     private CountryCode countryCode;
     @OneToOne(cascade = CascadeType.ALL)

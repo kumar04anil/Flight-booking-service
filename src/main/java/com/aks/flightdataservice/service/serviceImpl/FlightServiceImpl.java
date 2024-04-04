@@ -28,12 +28,13 @@ import java.util.Objects;
 @Slf4j
 public class FlightServiceImpl implements FlightService {
 
-    private FlightMapper flightMapper;
+    @Autowired
+    private final FlightMapper flightMapper;
     private final FlightRepository flightRepository;
 
     @Override
     public FlightListDataDto getFlightByFlightNumber(String flightNumber) {
-
+        log.info("Inside service ::getFlightByFlightNumber:: flightNumber::" + flightNumber);
             List<FlightEntity> flightEntityList = flightRepository.findByFlightNumber(flightNumber);
             if(CollectionUtils.isEmpty(flightEntityList)) {
                 log.error("No flight mapping found for provided flight number:" + flightNumber);
@@ -41,22 +42,29 @@ public class FlightServiceImpl implements FlightService {
         }
         FlightListDataDto flightListDataDto = new FlightListDataDto();
         flightListDataDto.setFlightList(flightMapper.flightEntityToDtoList(flightEntityList));
+        log.info("service call end::getFlightByFlightNumber:: response::" + flightListDataDto);
 
         return flightListDataDto;
     }
     @Override
     public FlightFullResponseDataDto addNewAirLine(FlightDataDto flightDataDto) {
+        log.info("Inside service ::addNewAirLine:: flightDataDto::" + flightDataDto);
         FlightEntity flightEntity = flightMapper.map(flightDataDto);
-        var olderFlightDetails = getFlightByFlightNumber(flightDataDto.getFlightNumber());
-        if(Objects.nonNull(olderFlightDetails)) {
-            log.error("Duplicate flight details, Flight details already exists :: " + olderFlightDetails);
-            throw new DuplicateFlightException("Flight details already exists " + flightDataDto);
-        }
-        FlightFullResponseDataDto responseDataDto = new FlightFullResponseDataDto();
-        var flightResponse = flightMapper.map(flightRepository.save(flightEntity));
-        responseDataDto.setFlight(flightResponse);
+        List<FlightEntity> olderFlightDetails =
+                flightRepository.findByFlightNumber(flightDataDto.getFlightNumber());
 
-        return responseDataDto;
+        FlightFullResponseDataDto responseDataDto = new FlightFullResponseDataDto();
+        if(CollectionUtils.isEmpty(olderFlightDetails)) {
+
+            var flightResponse = flightMapper.map(flightRepository.save(flightEntity));
+            responseDataDto.setFlight(flightResponse);
+            log.info("Service call end" + responseDataDto);
+            return responseDataDto;
+        }
+        //responseDataDto.setFlight(flightMapper.map(olderFlightDetails.get(0)));
+        //TODO for idempotency implementation.
+        log.error("Duplicate flight details, Flight details already exists :: " + olderFlightDetails);
+        throw new DuplicateFlightException("Flight details already exists " + flightDataDto.getFlightNumber());
     }
 
 }

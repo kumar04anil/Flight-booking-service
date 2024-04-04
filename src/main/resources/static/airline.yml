@@ -79,6 +79,7 @@ components:
         - flightTime
         - fare
         - flightInfo
+        - countryCode
       type: object
       properties:
         destination:
@@ -89,18 +90,18 @@ components:
           type: string
           description: unique flight number.
           example: 'FLIGHT222'
-        duration:
+        flightDuration:
           type: string
           description: flight timeTravel.
           example: '2 hrs'
         flightDate:
           type: string
-          format: date-time
+          format: date
           description: flight Date
           example: '2024-12-03'
         flightTime:
           type: string
-          format: time
+          format: date-time
           description: flight time
           example: '13:30:00'
         fare:
@@ -132,7 +133,7 @@ components:
         flightType:
           type: string
           description: Type of flight
-          example: 'commercial'
+          example: 'INTERNATIONAL'
         numberOfSeats:
           type: integer
           format: int32
@@ -155,21 +156,21 @@ components:
     CountryCodeDataDto:
       description: 'country code for flight source and destination'
       enum:
-        - DEL
-        - HYD
-        - GKP
-        - JPR
-        - PTNA
-        - LKNW
-        - KLA
-        - GOA
-        - ASM
-        - SRN
-        - JMU
-        - KTRA
-        - CHND
-        - JMNGR
-        - KNPR
+        - INDIA
+        - NEPAL
+        - BHUTAN
+        - SRILANKA
+        - THAI
+        - INDO
+        - JAVA
+        - SUMATRA
+        - CHINA
+        - JAPAN
+        - DUBAI
+        - AMERICA
+        - UK
+        - AUS
+
     FlightStatusDataDto:
       description: 'status of flight'
       enum:
