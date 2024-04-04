@@ -13,8 +13,7 @@ import java.util.List;
 /**
  * Mapper implementation for flight service to convert entity to dto and vice versa.
  */
-@Component
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface FlightMapper {
     FlightEntity map(FlightDataDto flightDataDto);
     FlightDataDto map (FlightEntity flightEntity);
