@@ -5,8 +5,8 @@ info:
 servers:
   - url: https://localhost:8080
 tags:
-  - name: Customer
-    description: Customer specific data.
+  - name: FlightBooking
+    description: FLight Booking specific data.
 paths:
   /airline:
     post:
@@ -66,7 +66,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponseDataDto'
       summary: This API will be used to fetch flight details by Flight Number
-
+  /booking:
+    post:
+      tags:
+        - Booking
+      summary: Flight booking
+      operationId: flightBooking
+      requestBody:
+        description: BookingObject for new flight booking.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingDataDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/BookingFullResponseDataDto'
+        '404':
+          description: NOT FOUND
 components:
   schemas:
     FlightDataDto:
@@ -214,7 +234,91 @@ components:
         message:
           type: string
       type: object
+    BookingDataDto:
+      required:
+        - source
+        - destination
+        - seatReserved
+        - passengerDetails
+      type: object
+      properties:
+        destination:
+          $ref: '#/components/schemas/CountryCodeDataDto'
+        source:
+          $ref: '#/components/schemas/CountryCodeDataDto'
+        seatReserved:
+          type: integer
+          format: int32
+          description: seat count
+        passengerDetails:
+          items:
+            $ref: '#/components/schemas/PassengerDataDto'
+          type: array
 
+    PassengerDataDto:
+      required:
+        - emailAddress
+        - firstName
+        - lastName
+        - gender
+        - mobileNumber
+        - age
+      type: object
+      properties:
+        emailAddress:
+          type: string
+          example: 'kumar.04anil@aks.com'
+        firstName:
+          type: string
+          description: FirstName
+          example: 'Anil'
+        lastName:
+          type: string
+          description: LastName.
+          example: 'Labaan'
+        gender:
+          type: string
+          description: gender.
+          example: 'Male'
+        mobileNumber:
+          type: string
+          description: 10 digit MobileNumber.
+          example: '9012345678'
+        age:
+          type: integer
+          format: int32
+          description: passenger age, not below 1.5 year.
+          example: '22'
+    BookingFullResponseDataDto:
+      type: object
+      properties:
+        bookingDate:
+          type: string
+          format: date
+          example: '2024-12-03'
+        fare:
+          type: number
+          format: double
+          description: Total ticket fare
+        flightDate:
+          type: string
+          format: date
+          description: flight Date
+          example: '2024-12-03'
+        flightNumber:
+          type: string
+          description: unique flight number.
+          example: 'FLIGHT222'
+        bookingId:
+          type: string
+          description: unique bookingId for ticket.
+          example: 'FLIGHT222-BID000001'
+        pnr:
+          type: string
+          description: unique PNR for ticket.
+          example: 'PNR-00000000001'
+        booking:
+          $ref: '#/components/schemas/BookingDataDto'
 
   examples:
     validation_error_response:
