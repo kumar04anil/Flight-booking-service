@@ -24,5 +24,6 @@ public class PassengerEntity {
     private String gender;
     private String lastName;
     private long mobileNumber;
+    private int age;
     private long bookingId;
 }

@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @NoArgsConstructor
@@ -21,15 +22,13 @@ public class BookingEntity implements Serializable {
     @Id
     @GeneratedValue
     private long bookingId;
-    private LocalDate bookingDate;
-    private String destination;
-    private String source;
-    private double fare;
-    private String flightDate;
+    private CountryCode source;
+    private CountryCode destination;
+    private int seatReserved;
     private String flightNumber;
-    private LocalTime flightTime;
+    private OffsetDateTime flightTime;
     private String status;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "bookingDetails", joinColumns = {@JoinColumn(name="bookingId")}, inverseJoinColumns = {@JoinColumn(name="passengerId")})
-    private List<PassengerEntity> passenger;
+    private List<PassengerEntity> passengerDetails;
 }
