@@ -178,18 +178,6 @@ components:
       enum:
         - INDIA
         - NEPAL
-        - BHUTAN
-        - SRILANKA
-        - THAI
-        - INDO
-        - JAVA
-        - SUMATRA
-        - CHINA
-        - JAPAN
-        - DUBAI
-        - AMERICA
-        - UK
-        - AUS
 
     FlightStatusDataDto:
       description: 'status of flight'
@@ -236,12 +224,18 @@ components:
       type: object
     BookingDataDto:
       required:
+        - flightNumber
         - source
         - destination
         - seatReserved
+        - flightTime
         - passengerDetails
       type: object
       properties:
+        flightNumber:
+          type: string
+          description: unique flight number.
+          example: 'FLIGHT222'
         destination:
           $ref: '#/components/schemas/CountryCodeDataDto'
         source:
@@ -250,6 +244,11 @@ components:
           type: integer
           format: int32
           description: seat count
+        flightTime:
+          type: string
+          format: date-time
+          description: flight time
+          example: '13:30:00'
         passengerDetails:
           items:
             $ref: '#/components/schemas/PassengerDataDto'
